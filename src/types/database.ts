@@ -43,6 +43,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       tags: {
         Row: {
@@ -66,6 +67,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       products: {
         Row: {
@@ -140,6 +142,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "products_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       product_tags: {
         Row: {
@@ -154,6 +165,22 @@ export interface Database {
           product_id?: string;
           tag_id?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "product_tags_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "product_tags_tag_id_fkey";
+            columns: ["tag_id"];
+            isOneToOne: false;
+            referencedRelation: "tags";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       click_events: {
         Row: {
@@ -189,6 +216,15 @@ export interface Database {
           source_page?: string | null;
           created_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "click_events_product_id_fkey";
+            columns: ["product_id"];
+            isOneToOne: false;
+            referencedRelation: "products";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       admin_users: {
         Row: {
@@ -203,6 +239,7 @@ export interface Database {
           id?: string;
           email?: string;
         };
+        Relationships: [];
       };
       site_settings: {
         Row: {
@@ -217,6 +254,7 @@ export interface Database {
           key?: string;
           value?: Json;
         };
+        Relationships: [];
       };
     };
     Views: Record<string, never>;
