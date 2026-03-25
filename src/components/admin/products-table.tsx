@@ -26,8 +26,12 @@ import {
 import {
   deleteProduct,
   toggleProductPublished,
-  type ProductWithCategory,
 } from "@/lib/actions/products";
+import type { Database } from "@/types/database";
+
+type ProductWithCategory = Database["public"]["Tables"]["products"]["Row"] & {
+  categories: { name: string } | null;
+};
 
 export function ProductsTable({ products }: { products: ProductWithCategory[] }) {
   const router = useRouter();
