@@ -3,10 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, GripVertical } from "lucide-react";
+import { Plus, Pencil, Trash2, GripVertical, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -149,10 +148,23 @@ export function CategoriesManager({
                   <button
                     onClick={() => handleToggleActive(cat.id, cat.is_active)}
                     disabled={isPending}
+                    className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${
+                      cat.is_active
+                        ? "border-neon-green/40 bg-neon-green/10 text-neon-green-dark"
+                        : "border-orange-300/40 bg-orange-50 text-orange-600"
+                    }`}
+                    title={
+                      cat.is_active
+                        ? "Click to deactivate"
+                        : "Click to activate"
+                    }
                   >
-                    <Badge variant={cat.is_active ? "default" : "outline"}>
-                      {cat.is_active ? "Active" : "Inactive"}
-                    </Badge>
+                    {cat.is_active ? (
+                      <Eye className="h-3 w-3" />
+                    ) : (
+                      <EyeOff className="h-3 w-3" />
+                    )}
+                    {cat.is_active ? "Active" : "Inactive"}
                   </button>
                 </TableCell>
                 <TableCell className="text-right">

@@ -5,12 +5,12 @@ import {
   Tags,
   MousePointerClick,
   Eye,
+  EyeOff,
   FileEdit,
   Star,
   TrendingUp,
   ArrowRight,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getDashboardStats } from "@/lib/actions/dashboard";
 
@@ -210,11 +210,20 @@ export default async function AdminDashboard() {
                     </p>
                   </div>
                 </div>
-                <Badge
-                  variant={product.is_published ? "default" : "outline"}
+                <span
+                  className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium ${
+                    product.is_published
+                      ? "border-neon-green/40 bg-neon-green/10 text-neon-green-dark"
+                      : "border-orange-300/40 bg-orange-50 text-orange-600"
+                  }`}
                 >
-                  {product.is_published ? "Published" : "Draft"}
-                </Badge>
+                  {product.is_published ? (
+                    <Eye className="h-3 w-3" />
+                  ) : (
+                    <EyeOff className="h-3 w-3" />
+                  )}
+                  {product.is_published ? "Live" : "Draft"}
+                </span>
               </Link>
             ))}
           </div>

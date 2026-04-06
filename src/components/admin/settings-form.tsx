@@ -2,9 +2,9 @@
 
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { Eye, EyeOff, BarChart3, BarChartBig } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   updateSiteSettings,
   type SiteSettings,
@@ -136,21 +136,35 @@ export function SettingsForm({ settings }: { settings: SiteSettings }) {
           <button
             type="button"
             onClick={() => setShowPrices(!showPrices)}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${
+              showPrices
+                ? "border-neon-green/40 bg-neon-green/10 text-neon-green-dark"
+                : "border-orange-300/40 bg-orange-50 text-orange-600"
+            }`}
           >
-            <Badge variant={showPrices ? "default" : "outline"}>
-              {showPrices ? "Prices Visible" : "Prices Hidden"}
-            </Badge>
+            {showPrices ? (
+              <Eye className="h-3 w-3" />
+            ) : (
+              <EyeOff className="h-3 w-3" />
+            )}
+            {showPrices ? "Prices Visible" : "Prices Hidden"}
           </button>
 
           <button
             type="button"
             onClick={() => setAnalyticsEnabled(!analyticsEnabled)}
-            className="flex items-center gap-2"
+            className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${
+              analyticsEnabled
+                ? "border-neon-green/40 bg-neon-green/10 text-neon-green-dark"
+                : "border-orange-300/40 bg-orange-50 text-orange-600"
+            }`}
           >
-            <Badge variant={analyticsEnabled ? "default" : "outline"}>
-              {analyticsEnabled ? "Analytics Enabled" : "Analytics Disabled"}
-            </Badge>
+            {analyticsEnabled ? (
+              <BarChart3 className="h-3 w-3" />
+            ) : (
+              <BarChartBig className="h-3 w-3" />
+            )}
+            {analyticsEnabled ? "Analytics On" : "Analytics Off"}
           </button>
         </div>
       </section>
