@@ -70,7 +70,7 @@ export function ProductsTable({ products }: { products: ProductWithCategory[] })
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-12">
         <p className="text-muted-foreground">No products yet</p>
-        <Button render={<Link href="/admin/products/new" />} className="mt-4">
+        <Button render={<Link href="/admin/products/new" />} nativeButton={false} className="mt-4">
           Add your first product
         </Button>
       </div>
@@ -156,6 +156,7 @@ export function ProductsTable({ products }: { products: ProductWithCategory[] })
                     variant="ghost"
                     size="icon-sm"
                     render={<Link href={`/admin/products/${product.id}/edit`} />}
+                    nativeButton={false}
                   >
                     <Pencil className="h-3.5 w-3.5" />
                   </Button>

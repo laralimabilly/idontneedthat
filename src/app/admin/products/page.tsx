@@ -16,7 +16,7 @@ export default async function ProductsPage() {
             {products.length} product{products.length !== 1 ? "s" : ""}
           </p>
         </div>
-        <Button render={<Link href="/admin/products/new" />}>
+        <Button render={<Link href="/admin/products/new" />} nativeButton={false}>
           <Plus className="mr-1.5 h-4 w-4" />
           Add Product
         </Button>

@@ -162,6 +162,7 @@ export default async function AdminDashboard() {
             variant="ghost"
             size="sm"
             render={<Link href="/admin/products" />}
+            nativeButton={false}
           >
             View all
             <ArrowRight className="ml-1 h-3.5 w-3.5" />
@@ -173,6 +174,7 @@ export default async function AdminDashboard() {
             <p className="text-muted-foreground">No products yet</p>
             <Button
               render={<Link href="/admin/products/new" />}
+              nativeButton={false}
               className="mt-3"
               size="sm"
             >

@@ -30,7 +30,7 @@ export default async function HomePage() {
               oddly feel you need. Curated picks with links to top stores.
             </p>
             <div className="mt-6 flex gap-3">
-              <Button render={<Link href="/products" />} size="lg">
+              <Button render={<Link href="/products" />} nativeButton={false} size="lg">
                 Browse Products
                 <ArrowRight className="ml-1.5 h-4 w-4" />
               </Button>
@@ -47,7 +47,7 @@ export default async function HomePage() {
             <Button
               variant="ghost"
               size="sm"
-              render={<Link href="/products" />}
+              render={<Link href="/products" />} nativeButton={false}
             >
               View all
               <ArrowRight className="ml-1 h-3.5 w-3.5" />
@@ -109,7 +109,7 @@ export default async function HomePage() {
             <Button
               variant="ghost"
               size="sm"
-              render={<Link href="/products" />}
+              render={<Link href="/products" />} nativeButton={false}
             >
               View all
               <ArrowRight className="ml-1 h-3.5 w-3.5" />
