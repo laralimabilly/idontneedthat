@@ -3,9 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import { Eye, EyeOff, Star, StarOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { createProduct, updateProduct } from "@/lib/actions/products";
 import type { Database } from "@/types/database";
 
@@ -24,7 +24,6 @@ export function ProductForm({ product, categories }: ProductFormProps) {
   const [isFeatured, setIsFeatured] = useState(product?.is_featured ?? false);
 
   function handleSubmit(formData: FormData) {
-    // Inject checkbox/toggle values since they don't submit when unchecked
     formData.set("is_published", isPublished.toString());
     formData.set("is_featured", isFeatured.toString());
 
@@ -45,6 +44,70 @@ export function ProductForm({ product, categories }: ProductFormProps) {
 
   return (
     <form action={handleSubmit} className="space-y-8">
+      {/* Status Banner — always visible at top */}
+      <div
+        className={`flex items-center justify-between rounded-xl border-2 p-4 transition-colors ${
+          isPublished
+            ? "border-neon-green/50 bg-neon-green/5"
+            : "border-orange-300/50 bg-orange-50"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <div
+            className={`flex h-10 w-10 items-center justify-center rounded-lg ${
+              isPublished ? "bg-neon-green/20" : "bg-orange-100"
+            }`}
+          >
+            {isPublished ? (
+              <Eye className="h-5 w-5 text-neon-green-dark" />
+            ) : (
+              <EyeOff className="h-5 w-5 text-orange-600" />
+            )}
+          </div>
+          <div>
+            <p className="font-display text-sm font-bold">
+              {isPublished ? "Published" : "Draft"}
+            </p>
+            <p className="text-xs text-muted-foreground">
+              {isPublished
+                ? "This product is visible on the public site"
+                : "This product is hidden from visitors"}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setIsFeatured(!isFeatured)}
+            className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+              isFeatured
+                ? "border-bright-yellow/50 bg-bright-yellow/10 text-yellow-700"
+                : "border-border bg-background text-muted-foreground hover:bg-muted"
+            }`}
+          >
+            {isFeatured ? (
+              <Star className="h-3.5 w-3.5 fill-current" />
+            ) : (
+              <StarOff className="h-3.5 w-3.5" />
+            )}
+            {isFeatured ? "Featured" : "Not Featured"}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsPublished(!isPublished)}
+            className={`rounded-lg px-4 py-1.5 text-xs font-bold transition-colors ${
+              isPublished
+                ? "bg-neon-green text-black hover:bg-neon-green-dark"
+                : "bg-foreground text-background hover:bg-foreground/80"
+            }`}
+          >
+            {isPublished ? "Unpublish" : "Publish"}
+          </button>
+        </div>
+      </div>
+
       {/* Basic Info */}
       <section className="space-y-4">
         <h2 className="font-display text-lg font-semibold">Basic Info</h2>
@@ -254,32 +317,6 @@ export function ProductForm({ product, categories }: ProductFormProps) {
               className="flex w-full rounded-lg border border-input bg-transparent px-3 py-2 text-sm transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             />
           </div>
-        </div>
-      </section>
-
-      {/* Publish Settings */}
-      <section className="space-y-4">
-        <h2 className="font-display text-lg font-semibold">Status</h2>
-        <div className="flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => setIsPublished(!isPublished)}
-            className="flex items-center gap-2"
-          >
-            <Badge variant={isPublished ? "default" : "outline"}>
-              {isPublished ? "Published" : "Draft"}
-            </Badge>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setIsFeatured(!isFeatured)}
-            className="flex items-center gap-2"
-          >
-            <Badge variant={isFeatured ? "secondary" : "outline"}>
-              {isFeatured ? "Featured" : "Not Featured"}
-            </Badge>
-          </button>
         </div>
       </section>
 

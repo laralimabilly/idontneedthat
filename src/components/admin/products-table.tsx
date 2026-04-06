@@ -4,9 +4,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Pencil, Trash2, ExternalLink } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  ExternalLink,
+  Eye,
+  EyeOff,
+  Star,
+  StarOff,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -26,6 +33,7 @@ import {
 import {
   deleteProduct,
   toggleProductPublished,
+  toggleProductFeatured,
 } from "@/lib/actions/products";
 import type { Database } from "@/types/database";
 
@@ -33,7 +41,11 @@ type ProductWithCategory = Database["public"]["Tables"]["products"]["Row"] & {
   categories: { name: string } | null;
 };
 
-export function ProductsTable({ products }: { products: ProductWithCategory[] }) {
+export function ProductsTable({
+  products,
+}: {
+  products: ProductWithCategory[];
+}) {
   const router = useRouter();
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -60,7 +72,23 @@ export function ProductsTable({ products }: { products: ProductWithCategory[] })
       if (result.error) {
         toast.error(result.error);
       } else {
-        toast.success(currentValue ? "Product unpublished" : "Product published");
+        toast.success(
+          currentValue ? "Product unpublished" : "Product published"
+        );
+        router.refresh();
+      }
+    });
+  }
+
+  function handleToggleFeatured(id: string, currentValue: boolean) {
+    startTransition(async () => {
+      const result = await toggleProductFeatured(id, !currentValue);
+      if (result.error) {
+        toast.error(result.error);
+      } else {
+        toast.success(
+          currentValue ? "Removed from featured" : "Added to featured"
+        );
         router.refresh();
       }
     });
@@ -70,7 +98,11 @@ export function ProductsTable({ products }: { products: ProductWithCategory[] })
     return (
       <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-12">
         <p className="text-muted-foreground">No products yet</p>
-        <Button render={<Link href="/admin/products/new" />} nativeButton={false} className="mt-4">
+        <Button
+          render={<Link href="/admin/products/new" />}
+          nativeButton={false}
+          className="mt-4"
+        >
           Add your first product
         </Button>
       </div>
@@ -137,25 +169,67 @@ export function ProductsTable({ products }: { products: ProductWithCategory[] })
                 )}
               </TableCell>
               <TableCell>
-                <button
-                  onClick={() =>
-                    handleTogglePublished(product.id, product.is_published)
-                  }
-                  disabled={isPending}
-                >
-                  <Badge
-                    variant={product.is_published ? "default" : "outline"}
+                <div className="flex items-center gap-1.5">
+                  {/* Publish toggle */}
+                  <button
+                    onClick={() =>
+                      handleTogglePublished(product.id, product.is_published)
+                    }
+                    disabled={isPending}
+                    className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${
+                      product.is_published
+                        ? "border-neon-green/40 bg-neon-green/10 text-neon-green-dark"
+                        : "border-orange-300/40 bg-orange-50 text-orange-600"
+                    }`}
+                    title={
+                      product.is_published
+                        ? "Click to unpublish"
+                        : "Click to publish"
+                    }
                   >
-                    {product.is_published ? "Published" : "Draft"}
-                  </Badge>
-                </button>
+                    {product.is_published ? (
+                      <Eye className="h-3 w-3" />
+                    ) : (
+                      <EyeOff className="h-3 w-3" />
+                    )}
+                    {product.is_published ? "Live" : "Draft"}
+                  </button>
+
+                  {/* Featured toggle */}
+                  <button
+                    onClick={() =>
+                      handleToggleFeatured(product.id, product.is_featured)
+                    }
+                    disabled={isPending}
+                    className={`flex items-center justify-center rounded-lg border p-1 transition-colors ${
+                      product.is_featured
+                        ? "border-bright-yellow/40 bg-bright-yellow/10 text-yellow-600"
+                        : "border-transparent text-muted-foreground/40 hover:border-border hover:text-muted-foreground"
+                    }`}
+                    title={
+                      product.is_featured
+                        ? "Remove from featured"
+                        : "Add to featured"
+                    }
+                  >
+                    {product.is_featured ? (
+                      <Star className="h-3.5 w-3.5 fill-current" />
+                    ) : (
+                      <StarOff className="h-3.5 w-3.5" />
+                    )}
+                  </button>
+                </div>
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex items-center justify-end gap-1">
                   <Button
                     variant="ghost"
                     size="icon-sm"
-                    render={<Link href={`/admin/products/${product.id}/edit`} />}
+                    render={
+                      <Link
+                        href={`/admin/products/${product.id}/edit`}
+                      />
+                    }
                     nativeButton={false}
                   >
                     <Pencil className="h-3.5 w-3.5" />

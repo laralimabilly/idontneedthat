@@ -186,3 +186,19 @@ export async function toggleProductPublished(id: string, isPublished: boolean) {
   revalidatePath("/admin/products");
   return { success: true };
 }
+
+export async function toggleProductFeatured(id: string, isFeatured: boolean) {
+  const supabase = await createClient();
+
+  const { error } = await supabase
+    .from("products")
+    .update({ is_featured: isFeatured })
+    .eq("id", id);
+
+  if (error) {
+    return { error: error.message };
+  }
+
+  revalidatePath("/admin/products");
+  return { success: true };
+}
