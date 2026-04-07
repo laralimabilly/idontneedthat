@@ -7,12 +7,14 @@ import {
   getRecentProducts,
   getActiveCategories,
 } from "@/lib/actions/public";
+import { getSiteSettings } from "@/lib/actions/settings";
 
 export default async function HomePage() {
-  const [featured, recent, categories] = await Promise.all([
+  const [featured, recent, categories, settings] = await Promise.all([
     getFeaturedProducts(),
     getRecentProducts(8),
     getActiveCategories(),
+    getSiteSettings(),
   ]);
 
   return (
@@ -26,8 +28,7 @@ export default async function HomePage() {
               <span className="text-neon-green">You Needed</span>
             </h1>
             <p className="mt-4 text-lg text-muted-foreground">
-              Discover the most wonderfully useless products that you&apos;ll
-              oddly feel you need. Curated picks with links to top stores.
+              {settings.site_description}
             </p>
             <div className="mt-6 flex gap-3">
               <Button render={<Link href="/products" />} nativeButton={false} size="lg">
@@ -55,7 +56,7 @@ export default async function HomePage() {
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} showPrice={settings.show_prices} />
             ))}
           </div>
         </section>
@@ -117,7 +118,7 @@ export default async function HomePage() {
           </div>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {recent.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} showPrice={settings.show_prices} />
             ))}
           </div>
         </section>

@@ -114,6 +114,16 @@ export function CategoriesManager({
           </Button>
         </div>
       ) : (
+        <div className="space-y-4">
+        <div className="flex justify-end">
+          <Button
+            size="sm"
+            onClick={() => setDialog({ type: "create" })}
+          >
+            <Plus className="mr-1.5 h-3.5 w-3.5" />
+            Add Category
+          </Button>
+        </div>
         <Table>
           <TableHeader>
             <TableRow>
@@ -193,6 +203,7 @@ export function CategoriesManager({
             ))}
           </TableBody>
         </Table>
+        </div>
       )}
 
       {/* Create / Edit dialog */}

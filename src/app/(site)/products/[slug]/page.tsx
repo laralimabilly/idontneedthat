@@ -5,6 +5,7 @@ import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AffiliateButton } from "@/components/site/affiliate-button";
 import { getProductBySlug } from "@/lib/actions/public";
+import { getSiteSettings } from "@/lib/actions/settings";
 
 export async function generateMetadata({
   params,
@@ -30,7 +31,10 @@ export default async function ProductDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const [product, settings] = await Promise.all([
+    getProductBySlug(slug),
+    getSiteSettings(),
+  ]);
 
   if (!product) {
     notFound();
@@ -84,12 +88,14 @@ export default async function ProductDetailPage({
           )}
 
           <div className="mt-4 flex items-baseline gap-2">
-            <span className="font-display text-3xl font-bold">
-              {new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: product.currency,
-              }).format(product.price)}
-            </span>
+            {settings.show_prices && (
+              <span className="font-display text-3xl font-bold">
+                {new Intl.NumberFormat("en-US", {
+                  style: "currency",
+                  currency: product.currency,
+                }).format(product.price)}
+              </span>
+            )}
             <span className="text-sm text-muted-foreground">
               on {product.store}
             </span>

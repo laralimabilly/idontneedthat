@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Pencil, Trash2 } from "lucide-react";
+import { Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -97,6 +97,15 @@ export function TagsManager({ tags }: { tags: TagRow[] }) {
         </div>
       ) : (
         <div className="space-y-4">
+          <div className="flex justify-end">
+            <Button
+              size="sm"
+              onClick={() => setDialog({ type: "create" })}
+            >
+              <Plus className="mr-1.5 h-3.5 w-3.5" />
+              Add Tag
+            </Button>
+          </div>
           <div className="flex flex-wrap gap-2">
             {tags.map((tag) => (
               <div

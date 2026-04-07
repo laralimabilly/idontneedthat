@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { ProductCard } from "@/components/site/product-card";
 import { getProductsByCategory } from "@/lib/actions/public";
+import { getSiteSettings } from "@/lib/actions/settings";
 
 export async function generateMetadata({
   params,
@@ -28,7 +29,10 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const result = await getProductsByCategory(slug);
+  const [result, settings] = await Promise.all([
+    getProductsByCategory(slug),
+    getSiteSettings(),
+  ]);
 
   if (!result) {
     notFound();
@@ -65,7 +69,7 @@ export default async function CategoryPage({
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} showPrice={settings.show_prices} />
           ))}
         </div>
       )}

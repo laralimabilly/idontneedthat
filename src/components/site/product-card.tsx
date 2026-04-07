@@ -8,7 +8,13 @@ type ProductWithCategory = ProductRow & {
   categories: { name: string; slug: string } | null;
 };
 
-export function ProductCard({ product }: { product: ProductWithCategory }) {
+export function ProductCard({
+  product,
+  showPrice = true,
+}: {
+  product: ProductWithCategory;
+  showPrice?: boolean;
+}) {
   return (
     <Link
       href={`/products/${product.slug}`}
@@ -50,12 +56,16 @@ export function ProductCard({ product }: { product: ProductWithCategory }) {
           </p>
         )}
         <div className="mt-auto flex items-center justify-between pt-3">
-          <span className="font-display text-base font-bold">
-            {new Intl.NumberFormat("en-US", {
-              style: "currency",
-              currency: product.currency,
-            }).format(product.price)}
-          </span>
+          {showPrice ? (
+            <span className="font-display text-base font-bold">
+              {new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: product.currency,
+              }).format(product.price)}
+            </span>
+          ) : (
+            <span />
+          )}
           <span className="text-xs text-muted-foreground">{product.store}</span>
         </div>
       </div>

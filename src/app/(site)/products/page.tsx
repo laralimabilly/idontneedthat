@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ProductCard } from "@/components/site/product-card";
 import { getPublishedProducts } from "@/lib/actions/public";
+import { getSiteSettings } from "@/lib/actions/settings";
 
 export const metadata: Metadata = {
   title: "All Products",
@@ -9,7 +10,10 @@ export const metadata: Metadata = {
 };
 
 export default async function ProductsPage() {
-  const products = await getPublishedProducts();
+  const [products, settings] = await Promise.all([
+    getPublishedProducts(),
+    getSiteSettings(),
+  ]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-12">
@@ -30,7 +34,7 @@ export default async function ProductsPage() {
       ) : (
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} showPrice={settings.show_prices} />
           ))}
         </div>
       )}
