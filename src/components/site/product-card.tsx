@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Badge } from "@/components/ui/badge";
+import { Star } from "lucide-react";
 import type { Database } from "@/types/database";
 
 type ProductRow = Database["public"]["Tables"]["products"]["Row"];
@@ -18,7 +18,7 @@ export function ProductCard({
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-neon-green/40 hover:shadow-lg hover:shadow-neon-green/5"
+      className="group flex flex-col overflow-hidden rounded-2xl border-2 border-foreground/15 bg-card transition-all hover:-translate-y-1 hover:border-foreground hover:shadow-[6px_6px_0_0_#68f70b]"
     >
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-muted">
@@ -26,7 +26,7 @@ export function ProductCard({
           <img
             src={product.image_url}
             alt={product.image_alt ?? product.title}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:rotate-1"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-muted-foreground">
@@ -34,20 +34,21 @@ export function ProductCard({
           </div>
         )}
         {product.is_featured && (
-          <Badge className="absolute left-2 top-2" variant="default">
+          <span className="absolute left-2.5 top-2.5 inline-flex -rotate-2 items-center gap-1 rounded-full bg-bright-yellow px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-black shadow-[2px_2px_0_0_#1a1a1a]">
+            <Star className="h-3 w-3 fill-current" />
             Featured
-          </Badge>
+          </span>
         )}
       </div>
 
       {/* Info */}
-      <div className="flex flex-1 flex-col p-3">
+      <div className="flex flex-1 flex-col p-4">
         {product.categories && (
-          <span className="mb-1 text-xs font-medium text-neon-green-dark">
+          <span className="mb-1.5 w-fit rounded-full bg-neon-green/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-neon-green-dark">
             {product.categories.name}
           </span>
         )}
-        <h3 className="font-display text-sm font-semibold leading-tight group-hover:text-neon-green-dark">
+        <h3 className="font-display text-sm font-bold leading-snug group-hover:text-neon-green-dark">
           {product.title}
         </h3>
         {product.short_description && (
@@ -55,9 +56,9 @@ export function ProductCard({
             {product.short_description}
           </p>
         )}
-        <div className="mt-auto flex items-center justify-between pt-3">
+        <div className="mt-auto flex items-center justify-between pt-3.5">
           {showPrice ? (
-            <span className="font-display text-base font-bold">
+            <span className="rounded-lg bg-foreground px-2 py-0.5 font-display text-sm font-bold text-background">
               {new Intl.NumberFormat("en-US", {
                 style: "currency",
                 currency: product.currency,
@@ -66,7 +67,9 @@ export function ProductCard({
           ) : (
             <span />
           )}
-          <span className="text-xs text-muted-foreground">{product.store}</span>
+          <span className="text-xs font-medium text-muted-foreground">
+            {product.store}
+          </span>
         </div>
       </div>
     </Link>

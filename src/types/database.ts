@@ -241,6 +241,51 @@ export interface Database {
         };
         Relationships: [];
       };
+      hero_banners: {
+        Row: {
+          id: string;
+          title: string;
+          subtitle: string | null;
+          badge: string | null;
+          image_url: string | null;
+          cta_label: string | null;
+          cta_url: string | null;
+          theme: string;
+          display_order: number;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          subtitle?: string | null;
+          badge?: string | null;
+          image_url?: string | null;
+          cta_label?: string | null;
+          cta_url?: string | null;
+          theme?: string;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          subtitle?: string | null;
+          badge?: string | null;
+          image_url?: string | null;
+          cta_label?: string | null;
+          cta_url?: string | null;
+          theme?: string;
+          display_order?: number;
+          is_active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       site_settings: {
         Row: {
           key: string;

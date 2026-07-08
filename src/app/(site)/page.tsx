@@ -1,62 +1,125 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Flame, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/product-card";
+import { HeroCarousel } from "@/components/site/hero-carousel";
 import {
   getFeaturedProducts,
   getRecentProducts,
   getActiveCategories,
+  getActiveBanners,
 } from "@/lib/actions/public";
 import { getSiteSettings } from "@/lib/actions/settings";
 
+const MARQUEE_PHRASES = [
+  "Totally unnecessary",
+  "Absolutely essential",
+  "You came here on purpose",
+  "Add to cart, coward",
+  "It's basically self-care",
+  "Treat yourself",
+];
+
+const CATEGORY_TILE_STYLES = [
+  {
+    bg: "bg-neon-green/15",
+    border: "hover:border-neon-green",
+    shadow: "hover:shadow-[5px_5px_0_0_#68f70b]",
+    icon: "bg-neon-green/25",
+  },
+  {
+    bg: "bg-hot-pink/15",
+    border: "hover:border-hot-pink",
+    shadow: "hover:shadow-[5px_5px_0_0_#ff6b9d]",
+    icon: "bg-hot-pink/25",
+  },
+  {
+    bg: "bg-electric-blue/15",
+    border: "hover:border-electric-blue",
+    shadow: "hover:shadow-[5px_5px_0_0_#00d4ff]",
+    icon: "bg-electric-blue/25",
+  },
+  {
+    bg: "bg-purple/15",
+    border: "hover:border-purple",
+    shadow: "hover:shadow-[5px_5px_0_0_#b44dff]",
+    icon: "bg-purple/25",
+  },
+  {
+    bg: "bg-bright-yellow/20",
+    border: "hover:border-bright-yellow",
+    shadow: "hover:shadow-[5px_5px_0_0_#ffe600]",
+    icon: "bg-bright-yellow/35",
+  },
+];
+
 export default async function HomePage() {
-  const [featured, recent, categories, settings] = await Promise.all([
+  const [featured, recent, categories, banners, settings] = await Promise.all([
     getFeaturedProducts(),
     getRecentProducts(8),
     getActiveCategories(),
+    getActiveBanners(),
     getSiteSettings(),
   ]);
 
   return (
     <div>
-      {/* Hero */}
-      <section className="border-b border-border bg-muted/30">
-        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
-          <div className="max-w-2xl">
-            <h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-              Products You Didn&apos;t Know{" "}
-              <span className="text-neon-green">You Needed</span>
-            </h1>
-            <p className="mt-4 text-lg text-muted-foreground">
-              {settings.site_description}
-            </p>
-            <div className="mt-6 flex gap-3">
-              <Button render={<Link href="/products" />} nativeButton={false} size="lg">
-                Browse Products
-                <ArrowRight className="ml-1.5 h-4 w-4" />
-              </Button>
+      {/* Hero (backend-fed carousel, playful fallback when no banners) */}
+      <HeroCarousel
+        banners={banners}
+        siteDescription={settings.site_description}
+      />
+
+      {/* Marquee strip */}
+      <div className="overflow-hidden border-b-2 border-foreground bg-foreground py-2.5">
+        <div className="animate-marquee flex w-max items-center">
+          {[0, 1].map((copy) => (
+            <div key={copy} className="flex items-center" aria-hidden={copy === 1}>
+              {MARQUEE_PHRASES.map((phrase, i) => (
+                <span
+                  key={`${copy}-${i}`}
+                  className="flex items-center whitespace-nowrap font-display text-sm font-bold uppercase tracking-widest text-neon-green"
+                >
+                  {phrase}
+                  <span className="mx-6 text-hot-pink">✦</span>
+                </span>
+              ))}
             </div>
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
 
       {/* Featured Products */}
       {featured.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-12">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display text-2xl font-bold">Featured</h2>
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <div className="flex items-end justify-between">
+            <div>
+              <span className="inline-flex -rotate-1 items-center gap-1 rounded-full bg-hot-pink px-2.5 py-0.5 font-display text-[11px] font-bold uppercase tracking-wider text-black shadow-[2px_2px_0_0_#1a1a1a]">
+                <Flame className="h-3 w-3" />
+                Hot right now
+              </span>
+              <h2 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
+                Featured Finds
+              </h2>
+            </div>
             <Button
               variant="ghost"
               size="sm"
-              render={<Link href="/products" />} nativeButton={false}
+              className="font-display font-bold"
+              render={<Link href="/products" />}
+              nativeButton={false}
             >
               View all
               <ArrowRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((product) => (
-              <ProductCard key={product.id} product={product} showPrice={settings.show_prices} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                showPrice={settings.show_prices}
+              />
             ))}
           </div>
         </section>
@@ -64,39 +127,51 @@ export default async function HomePage() {
 
       {/* Categories */}
       {categories.length > 0 && (
-        <section className="border-t border-border bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 py-12">
-            <h2 className="font-display text-2xl font-bold">Categories</h2>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {categories.map((cat) => (
-                <Link
-                  key={cat.id}
-                  href={`/categories/${cat.slug}`}
-                  className="flex items-center gap-3 rounded-xl border border-border bg-card p-4 transition-all hover:border-neon-green/40 hover:shadow-md"
-                >
-                  {cat.image_url ? (
-                    <img
-                      src={cat.image_url}
-                      alt={cat.name}
-                      className="h-10 w-10 rounded-lg object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-neon-green/10 text-lg">
-                      📁
-                    </div>
-                  )}
-                  <div>
-                    <p className="font-display text-sm font-semibold">
-                      {cat.name}
-                    </p>
-                    {cat.description && (
-                      <p className="text-xs text-muted-foreground line-clamp-1">
-                        {cat.description}
-                      </p>
+        <section className="border-y-2 border-foreground bg-muted/40">
+          <div className="mx-auto max-w-6xl px-4 py-14">
+            <h2 className="font-display text-3xl font-black tracking-tight sm:text-4xl">
+              Pick Your Poison
+            </h2>
+            <p className="mt-1 text-muted-foreground">
+              Every category is a different way to say &quot;fine, I&apos;ll buy it.&quot;
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {categories.map((cat, i) => {
+                const style =
+                  CATEGORY_TILE_STYLES[i % CATEGORY_TILE_STYLES.length];
+                return (
+                  <Link
+                    key={cat.id}
+                    href={`/categories/${cat.slug}`}
+                    className={`group flex items-center gap-3 rounded-2xl border-2 border-foreground/15 p-4 transition-all hover:-translate-y-1 ${style.bg} ${style.border} ${style.shadow}`}
+                  >
+                    {cat.image_url ? (
+                      <img
+                        src={cat.image_url}
+                        alt={cat.name}
+                        className="h-11 w-11 rounded-xl border border-foreground/10 object-cover"
+                      />
+                    ) : (
+                      <div
+                        className={`flex h-11 w-11 items-center justify-center rounded-xl text-xl ${style.icon}`}
+                      >
+                        📦
+                      </div>
                     )}
-                  </div>
-                </Link>
-              ))}
+                    <div className="min-w-0">
+                      <p className="font-display text-sm font-bold">
+                        {cat.name}
+                      </p>
+                      {cat.description && (
+                        <p className="line-clamp-1 text-xs text-muted-foreground">
+                          {cat.description}
+                        </p>
+                      )}
+                    </div>
+                    <ArrowRight className="ml-auto h-4 w-4 shrink-0 opacity-0 transition-opacity group-hover:opacity-100" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -104,25 +179,60 @@ export default async function HomePage() {
 
       {/* Recent Products */}
       {recent.length > 0 && (
-        <section className="mx-auto max-w-6xl px-4 py-12">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display text-2xl font-bold">Latest Finds</h2>
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <div className="flex items-end justify-between">
+            <div>
+              <span className="inline-flex rotate-1 items-center gap-1 rounded-full bg-electric-blue px-2.5 py-0.5 font-display text-[11px] font-bold uppercase tracking-wider text-black shadow-[2px_2px_0_0_#1a1a1a]">
+                <Zap className="h-3 w-3" />
+                Fresh off the truck
+              </span>
+              <h2 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
+                Latest Finds
+              </h2>
+            </div>
             <Button
               variant="ghost"
               size="sm"
-              render={<Link href="/products" />} nativeButton={false}
+              className="font-display font-bold"
+              render={<Link href="/products" />}
+              nativeButton={false}
             >
               View all
               <ArrowRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {recent.map((product) => (
-              <ProductCard key={product.id} product={product} showPrice={settings.show_prices} />
+              <ProductCard
+                key={product.id}
+                product={product}
+                showPrice={settings.show_prices}
+              />
             ))}
           </div>
         </section>
       )}
+
+      {/* Bottom CTA band */}
+      <section className="border-t-2 border-foreground bg-foreground">
+        <div className="mx-auto max-w-6xl px-4 py-14 text-center">
+          <h2 className="font-display text-3xl font-black tracking-tight text-background sm:text-4xl">
+            Still convinced you don&apos;t need anything?
+          </h2>
+          <p className="mx-auto mt-2 max-w-md text-background/70">
+            Bold of you. Scroll the full catalog and prove yourself wrong.
+          </p>
+          <Button
+            size="lg"
+            className="mt-6 rounded-full border-2 border-neon-green bg-neon-green font-display font-bold text-black shadow-[4px_4px_0_0_#ff6b9d] transition-transform hover:-translate-y-0.5 hover:bg-neon-green"
+            render={<Link href="/products" />}
+            nativeButton={false}
+          >
+            Browse everything
+            <ArrowRight className="ml-1.5 h-4 w-4" />
+          </Button>
+        </div>
+      </section>
     </div>
   );
 }

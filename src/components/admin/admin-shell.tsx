@@ -9,6 +9,7 @@ import {
   Package,
   FolderOpen,
   Tags,
+  GalleryHorizontalEnd,
   BarChart3,
   Settings,
   LogOut,
@@ -23,6 +24,7 @@ const navItems = [
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: FolderOpen },
   { href: "/admin/tags", label: "Tags", icon: Tags },
+  { href: "/admin/banners", label: "Hero Banners", icon: GalleryHorizontalEnd },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/settings", label: "Settings", icon: Settings },
 ];

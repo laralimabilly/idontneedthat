@@ -99,6 +99,22 @@ export async function getProductsByCategory(
   };
 }
 
+type BannerRow = Database["public"]["Tables"]["hero_banners"]["Row"];
+
+export async function getActiveBanners(): Promise<BannerRow[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("hero_banners")
+    .select("*")
+    .eq("is_active", true)
+    .order("display_order");
+
+  // Table may not exist until the hero_banners migration is applied —
+  // fall back to no banners so the homepage still renders.
+  if (error) return [];
+  return data as unknown as BannerRow[];
+}
+
 export async function getActiveCategories(): Promise<CategoryRow[]> {
   const supabase = await createClient();
   const { data, error } = await supabase

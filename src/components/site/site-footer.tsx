@@ -17,28 +17,33 @@ export function SiteFooter({
   const rest = siteName.split(" ").slice(2).join(" ");
 
   return (
-    <footer className="border-t border-border bg-muted/30">
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <div>
-            <Link href="/" className="font-display text-sm font-bold">
-              <span className="text-neon-green">{firstWord}</span>{" "}
-              {rest}
+    <footer className="bg-foreground text-background">
+      <div className="mx-auto max-w-6xl px-4 py-10">
+        <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:items-start">
+          <div className="text-center sm:text-left">
+            <Link href="/" className="group inline-flex items-center gap-2">
+              <span className="flex h-7 w-7 -rotate-3 items-center justify-center rounded-lg bg-neon-green font-display text-xs font-black text-black transition-transform group-hover:rotate-3">
+                !?
+              </span>
+              <span className="font-display text-base font-black tracking-tight">
+                <span className="text-neon-green">{firstWord}</span>{" "}
+                {rest}
+              </span>
             </Link>
-            <p className="mt-1 text-xs text-muted-foreground">
+            <p className="mt-2 max-w-xs text-xs text-background/60">
               {siteDescription}
             </p>
           </div>
 
-          <div className="flex flex-col items-center gap-2 sm:items-end">
+          <div className="flex flex-col items-center gap-3 sm:items-end">
             {(socialTwitter || socialInstagram) && (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 {socialTwitter && (
                   <a
                     href={`https://x.com/${socialTwitter.replace("@", "")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    className="rounded-full border border-background/25 px-3 py-1 text-xs font-medium text-background/70 transition-colors hover:border-electric-blue hover:text-electric-blue"
                   >
                     {socialTwitter}
                   </a>
@@ -48,14 +53,14 @@ export function SiteFooter({
                     href={`https://instagram.com/${socialInstagram.replace("@", "")}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                    className="rounded-full border border-background/25 px-3 py-1 text-xs font-medium text-background/70 transition-colors hover:border-hot-pink hover:text-hot-pink"
                   >
                     {socialInstagram}
                   </a>
                 )}
               </div>
             )}
-            <p className="text-xs text-muted-foreground">
+            <p className="max-w-sm text-center text-xs text-background/50 sm:text-right">
               {footerText ||
                 "This site contains affiliate links. We may earn a commission at no extra cost to you."}
             </p>
