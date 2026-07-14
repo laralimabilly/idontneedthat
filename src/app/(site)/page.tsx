@@ -3,6 +3,7 @@ import { ArrowRight, Flame, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/site/product-card";
 import { HeroCarousel } from "@/components/site/hero-carousel";
+import { Sparks } from "@/components/site/doodles";
 import {
   getFeaturedProducts,
   getRecentProducts,
@@ -81,7 +82,7 @@ export default async function HomePage() {
                   className="flex items-center whitespace-nowrap font-display text-sm font-bold uppercase tracking-widest text-neon-green"
                 >
                   {phrase}
-                  <span className="mx-6 text-hot-pink">✦</span>
+                  <span className="mx-6 text-hot-pink">✳</span>
                 </span>
               ))}
             </div>
@@ -98,8 +99,9 @@ export default async function HomePage() {
                 <Flame className="h-3 w-3" />
                 Hot right now
               </span>
-              <h2 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
+              <h2 className="relative mt-2 w-fit font-heading text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Featured Finds
+                <Sparks className="absolute -right-8 -top-3 h-6 w-6 rotate-30 text-hot-pink" />
               </h2>
             </div>
             <Button
@@ -129,8 +131,9 @@ export default async function HomePage() {
       {categories.length > 0 && (
         <section className="border-y-2 border-foreground bg-muted/40">
           <div className="mx-auto max-w-6xl px-4 py-14">
-            <h2 className="font-display text-3xl font-black tracking-tight sm:text-4xl">
+            <h2 className="relative w-fit font-heading text-3xl font-extrabold tracking-tight sm:text-4xl">
               Pick Your Poison
+              <Sparks className="absolute -right-8 -top-3 h-6 w-6 rotate-30 text-neon-green" />
             </h2>
             <p className="mt-1 text-muted-foreground">
               Every category is a different way to say &quot;fine, I&apos;ll buy it.&quot;
@@ -186,8 +189,9 @@ export default async function HomePage() {
                 <Zap className="h-3 w-3" />
                 Fresh off the truck
               </span>
-              <h2 className="mt-2 font-display text-3xl font-black tracking-tight sm:text-4xl">
+              <h2 className="relative mt-2 w-fit font-heading text-3xl font-extrabold tracking-tight sm:text-4xl">
                 Latest Finds
+                <Sparks className="absolute -right-8 -top-3 h-6 w-6 rotate-30 text-electric-blue" />
               </h2>
             </div>
             <Button
@@ -216,8 +220,9 @@ export default async function HomePage() {
       {/* Bottom CTA band */}
       <section className="border-t-2 border-foreground bg-foreground">
         <div className="mx-auto max-w-6xl px-4 py-14 text-center">
-          <h2 className="font-display text-3xl font-black tracking-tight text-background sm:text-4xl">
-            Still convinced you don&apos;t need anything?
+          <h2 className="font-heading text-3xl font-extrabold tracking-tight text-background sm:text-4xl">
+            Still convinced you don&apos;t need anything
+            <span className="text-neon-green">*</span>?
           </h2>
           <p className="mx-auto mt-2 max-w-md text-background/70">
             Bold of you. Scroll the full catalog and prove yourself wrong.
