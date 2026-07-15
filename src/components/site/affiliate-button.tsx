@@ -33,9 +33,15 @@ export function AffiliateButton({
   }
 
   return (
-    <Button onClick={handleClick} size="lg" className="w-full gap-2">
-      <ExternalLink className="h-4 w-4" />
-      Buy on {store}
-    </Button>
+    <div className="animate-nudge motion-reduce:animate-none">
+      <Button
+        onClick={handleClick}
+        size="lg"
+        className="h-14 w-full gap-2 rounded-full border-2 border-foreground bg-neon-green font-display text-lg font-bold text-black shadow-[5px_5px_0_0_#ff6b9d] transition-all hover:-translate-y-1 hover:bg-neon-green hover:shadow-[7px_7px_0_0_#ff6b9d]"
+      >
+        <ExternalLink className="h-5 w-5" />
+        Buy on {store}
+      </Button>
+    </div>
   );
 }

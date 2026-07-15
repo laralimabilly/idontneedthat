@@ -145,6 +145,30 @@ body {
   animation: float 5s ease-in-out infinite;
 }
 
+/* Periodic attention wiggle for the buy button (apply to a wrapper so
+   hover transforms on the button itself still work) */
+@keyframes nudge {
+  0%,
+  86%,
+  100% {
+    transform: none;
+  }
+  90% {
+    transform: rotate(-1.5deg) scale(1.03);
+  }
+  94% {
+    transform: rotate(1.5deg) scale(1.03);
+  }
+  98% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.animate-nudge {
+  animation: nudge 5s ease-in-out infinite;
+  transform-origin: center;
+}
+
 /* Subtle dot grid backdrop for hero */
 .bg-dot-grid {
   background-image: radial-gradient(

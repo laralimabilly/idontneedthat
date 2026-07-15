@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Raleway, Baloo_2, Geist, Geist_Mono, Space_Grotesk, Alatsi } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -56,6 +57,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${baloo.variable} ${raleway.variable} ${alatsi.variable} h-full antialiased`}
     >
+      <GoogleTagManager gtmId="GTM-N4G7VSRK" />
       <body className="min-h-full flex flex-col">
         {/* Adobe Fonts (Museo Sans Rounded) — React hoists these into <head> */}
         <link
