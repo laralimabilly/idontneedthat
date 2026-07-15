@@ -1,3 +1,6 @@
+// ViewTransition ships in the React canary bundled with Next.js
+// (enabled via experimental.viewTransition in next.config.ts)
+import { ViewTransition } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
@@ -13,7 +16,9 @@ export default async function SiteLayout({
   return (
     <>
       <SiteHeader siteName={settings.site_name} />
-      <main className="flex-1">{children}</main>
+      <ViewTransition>
+        <main className="flex flex-1 flex-col">{children}</main>
+      </ViewTransition>
       <SiteFooter
         siteName={settings.site_name}
         siteDescription={settings.site_description}

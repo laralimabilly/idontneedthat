@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { AffiliateButton } from "@/components/site/affiliate-button";
+import { CtaBanner } from "@/components/site/cta-banner";
 import { getProductBySlug } from "@/lib/actions/public";
 import { getSiteSettings } from "@/lib/actions/settings";
 
@@ -41,7 +42,8 @@ export default async function ProductDetailPage({
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <>
+      <div className="mx-auto max-w-6xl px-4 pb-8 pt-28 sm:pt-32">
       <Link
         href="/products"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -123,6 +125,9 @@ export default async function ProductDetailPage({
           )}
         </div>
       </div>
-    </div>
+      </div>
+
+      <CtaBanner />
+    </>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Permanent_Marker, Baloo_2, Geist, Geist_Mono, Space_Grotesk, Alatsi } from "next/font/google";
+import { Raleway, Baloo_2, Geist, Geist_Mono, Space_Grotesk, Alatsi } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
@@ -24,10 +24,11 @@ const baloo = Baloo_2({
   weight: ["600", "700", "800"],
 });
 
-const marker = Permanent_Marker({
-  variable: "--font-permanent-marker",
+const raleway = Raleway({
+  variable: "--font-raleway",
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "900"],
+  style: ["normal", "italic"],
 });
 
 const alatsi = Alatsi({
@@ -53,9 +54,20 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${baloo.variable} ${marker.variable} ${alatsi.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${baloo.variable} ${raleway.variable} ${alatsi.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        {/* Adobe Fonts (Museo Sans Rounded) — React hoists these into <head> */}
+        <link
+          rel="preconnect"
+          href="https://use.typekit.net"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://use.typekit.net/tlg6beu.css"
+          precedence="default"
+        />
         {children}
         <Analytics />
       </body>

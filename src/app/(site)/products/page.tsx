@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CtaBanner } from "@/components/site/cta-banner";
 import { ProductCard } from "@/components/site/product-card";
 import { getPublishedProducts } from "@/lib/actions/public";
 import { getSiteSettings } from "@/lib/actions/settings";
@@ -16,12 +17,13 @@ export default async function ProductsPage() {
   ]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12">
+    <>
+      <div className="mx-auto max-w-6xl px-4 pb-12 pt-28 sm:pt-32">
       <div>
         <h1 className="font-display text-3xl font-bold">All Products</h1>
         <p className="mt-1 text-muted-foreground">
-          {products.length} product{products.length !== 1 ? "s" : ""} you
-          didn&apos;t know you needed.
+          {products.length} product{products.length !== 1 ? "s" : ""}{" "}
+          you didn&apos;t know you needed.
         </p>
       </div>
 
@@ -38,6 +40,9 @@ export default async function ProductsPage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+
+      <CtaBanner />
+    </>
   );
 }

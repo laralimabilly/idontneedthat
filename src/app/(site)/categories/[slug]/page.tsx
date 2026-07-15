@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
+import { CtaBanner } from "@/components/site/cta-banner";
 import { ProductCard } from "@/components/site/product-card";
 import { getProductsByCategory } from "@/lib/actions/public";
 import { getSiteSettings } from "@/lib/actions/settings";
@@ -41,7 +42,8 @@ export default async function CategoryPage({
   const { category, products } = result;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-8">
+    <>
+      <div className="mx-auto max-w-6xl px-4 pb-8 pt-28 sm:pt-32">
       <Link
         href="/products"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
@@ -73,6 +75,9 @@ export default async function CategoryPage({
           ))}
         </div>
       )}
-    </div>
+      </div>
+
+      <CtaBanner />
+    </>
   );
 }
